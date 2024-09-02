@@ -12,11 +12,23 @@ app.use(bodyParser.json());
 
 
 // Correct CORS configuration
+// List of allowed origins
+const allowedOrigins = [
+  'https://rentme-smoky.vercel.app', 
+  'https://rentme-smoky.vercel.app/tenant/registration'
+];
+
 app.use(cors({
-  origin: 'https://rentme-smoky.vercel.app', // Allow this specific origin
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
-  allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
-  credentials: true,  // Allow credentials if needed
+  origin: function (origin, callback) {
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
 }));
 
 // MongoDB connection
