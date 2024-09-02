@@ -8,7 +8,13 @@ const PORT = 5000;
 
 // Middleware
 app.use(bodyParser.json());
-app.use(cors());
+// app.use(cors());
+
+
+// Configure CORS to allow requests from a specific origin
+app.use(cors({
+  origin: 'https://rentme-smoky.vercel.app', // Allow only this URL
+}));
 
 // MongoDB connection
 mongoose.connect('mongodb+srv://apartment:apartment@apartment.atzv3.mongodb.net/apartment', {
