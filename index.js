@@ -11,11 +11,12 @@ app.use(bodyParser.json());
 // app.use(cors());
 
 
-// Configure CORS to allow requests from a specific origin
+// Correct CORS configuration
 app.use(cors({
-  origin: 'https://rentme-smoky.vercel.app', // Allow only this URL
+  origin: 'https://rentme-smoky.vercel.app', // Allow this specific origin
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,  // Allow credentials if needed
 }));
 
 // MongoDB connection
