@@ -59,6 +59,11 @@ const paymentSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
 });
 
+app.get('/', (req, res) => {
+  res.send('Welcome to the RentMe API');
+});
+
+
 const Payment = mongoose.model('Payment', paymentSchema);
 
 // Dummy landlord data (kept hardcoded for simplicity)
