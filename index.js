@@ -82,18 +82,54 @@ app.post('/landlord/login', (req, res) => {
 });
 
 // Register tenant
+// app.post('/tenant/register', async (req, res) => {
+//   const { name, password } = req.body;
+//   const apartmentID = `APT${Math.floor(Math.random() * 10000)}`;
+
+//   try {
+//     const newTenant = new Tenant({ id: apartmentID, name, password, rentPaid: false });
+//     const apartment = await Apartment.findOne({ apartmentID });
+//     if (apartment && apartment.tenants.length >= 3) {
+//       return res.status(400).json({ message: 'Apartment is full' });
+//     }
+
+//     await newTenant.save();
+//     if (apartment) {
+//       apartment.tenants.push(newTenant._id);
+//       await apartment.save();
+//     } else {
+//       const newApartment = new Apartment({ apartmentID, tenants: [newTenant._id] });
+//       await newApartment.save();
+//     }
+
+//     res.status(201).json({ message: 'Tenant registered successfully', apartmentID });
+//   } catch (err) {
+//     res.status(500).json({ message: 'Error registering tenant', error: err.message });
+//   }
+// });
+
+
+// Register tenant route with enhanced error handling
 app.post('/tenant/register', async (req, res) => {
   const { name, password } = req.body;
   const apartmentID = `APT${Math.floor(Math.random() * 10000)}`;
 
   try {
+    // Validation checks
+    if (!name || !password) {
+      return res.status(400).json({ message: 'Name and password are required' });
+    }
+
     const newTenant = new Tenant({ id: apartmentID, name, password, rentPaid: false });
+    
     const apartment = await Apartment.findOne({ apartmentID });
+
     if (apartment && apartment.tenants.length >= 3) {
       return res.status(400).json({ message: 'Apartment is full' });
     }
 
     await newTenant.save();
+    
     if (apartment) {
       apartment.tenants.push(newTenant._id);
       await apartment.save();
@@ -104,9 +140,14 @@ app.post('/tenant/register', async (req, res) => {
 
     res.status(201).json({ message: 'Tenant registered successfully', apartmentID });
   } catch (err) {
-    res.status(500).json({ message: 'Error registering tenant', error: err.message });
+    console.error('Error during tenant registration:', err); // Log the error details
+    res.status(500).json({ message: 'Internal Server Error', error: err.message });
   }
 });
+
+
+
+
 
 // Tenant login
 app.post('/tenant/login', async (req, res) => {
