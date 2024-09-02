@@ -14,8 +14,8 @@ app.use(bodyParser.json());
 // Correct CORS configuration
 app.use(cors({
   origin: 'https://rentme-smoky.vercel.app', // Allow this specific origin
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
   credentials: true,  // Allow credentials if needed
 }));
 
